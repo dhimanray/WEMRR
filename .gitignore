@@ -47,6 +47,8 @@ coverage.xml
 *.cover
 .hypothesis/
 
+#examples/openmm/
+
 # Translations
 *.mo
 *.pot
