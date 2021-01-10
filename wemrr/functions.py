@@ -185,6 +185,7 @@ def build_namd(milestones,we_bin_width,k_eq,k_res,minimization_nsteps,equilibrat
 
         #change run.sh
         subprocess.call(["sed -i 's/SEGS_PER_STATE/%d/g' %s/run.sh"%(n_traj_per_bin,dir_name)], shell=True)
+        subprocess.call(["sed -i 's/SEGS_PER_STATE/%d/g' %s/run.slurm"%(n_traj_per_bin,dir_name)], shell=True)
 
 
 def build_openmm(milestones,we_bin_width,k_eq,k_res,minimization_nsteps,equilibration_nsteps,nsteps,print_frequency,dcd_frequency,pcoord_len,n_traj_per_bin,n_iterations_restrained,n_iterations):
