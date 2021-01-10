@@ -51,7 +51,7 @@ $WEST_ROOT/bin/w_init $BSTATE_ARGS  $TSTATE_ARGS  --segs-per-state SEGS_PER_STAT
 rm -f west.log west-restrain.log
 
 # Run restrained dynamics
-$WEST_ROOT/bin/w_run -r west-restrain.cfg --work-manager processes --n-workers 4 "$@" &> west-restrain.log
+$WEST_ROOT/bin/w_run -r west-restrain.cfg --work-manager processes --n-workers 1 "$@" &> west-restrain.log
 
 cd bstates
 mv colvars.in colvars_restrain.in
@@ -59,5 +59,5 @@ mv colvars_unrestrain.in colvars.in
 cd ..
 
 # Run unrestrained dynamics
-$WEST_ROOT/bin/w_run -r west.cfg --work-manager processes --n-workers 4 "$@" &> west.log
+$WEST_ROOT/bin/w_run -r west.cfg --work-manager processes --n-workers 1 "$@" &> west.log
 
