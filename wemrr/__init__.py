@@ -5,6 +5,7 @@ Weighted Ensemble Milestoning with Restraint Release
 
 # Add imports here
 from .functions import *
+from .analysis import *
 
 # Handle versioneer
 from ._version import get_versions
