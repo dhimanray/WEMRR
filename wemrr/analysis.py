@@ -89,8 +89,9 @@ def transitions_intermediate_milestone(w,itex,dt,tau,forward_milestone_position,
                         #break
         flux_array.append(flux)
         flux_back_array.append(flux_back)
-    flux = flux/((total_iteration-itex)*(tau-1))
-    flux_back = flux_back/((total_iteration-itex)*(tau-1))
+    flux = flux/((total_iteration-itex)*(tau-1)*dt)
+    flux_back = flux_back/((total_iteration-itex)*(tau-1)*dt)
+    lifetime = lifetime*dt
 
     fcost.close()
 
@@ -108,7 +109,7 @@ def transitions_intermediate_milestone(w,itex,dt,tau,forward_milestone_position,
     print('#time #flux_forward #flux_backward', file=f1)
 
     for i in range(total_iteration-itex):
-        print(i*(tau-1), flux_array[i], flux_back_array[i], file=f1)
+        print(i*(tau-1)*dt, flux_array[i], flux_back_array[i], file=f1)
 
     f1.close()
 
@@ -118,7 +119,7 @@ def transitions_intermediate_milestone(w,itex,dt,tau,forward_milestone_position,
     f1 = open('FPTD_forward.dat','w')
 
     for i in range(itex,len(it)):
-        print(i*(tau-1), it[i], file=f1)
+        print(i*(tau-1)*dt, it[i], file=f1)
 
     f1.close()
 
@@ -126,7 +127,7 @@ def transitions_intermediate_milestone(w,itex,dt,tau,forward_milestone_position,
     f2 = open('FPTD_back.dat','w')
 
     for i in range(itex,len(it)):
-        print(i*(tau-1), it_back[i], file=f2)
+        print(i*(tau-1)*dt, it_back[i], file=f2)
 
     f2.close()
 
@@ -199,7 +200,8 @@ def transitions_first_milestone(w,itex,dt,tau,forward_milestone_position):
                         break
                         #break
         flux_array.append(flux)
-    flux = flux/((total_iteration-itex)*(tau-1))
+    flux = flux/((total_iteration-itex)*(tau-1)*dt)
+    lifetime = lifetime*dt
 
     fcost.close()
 
@@ -214,7 +216,7 @@ def transitions_first_milestone(w,itex,dt,tau,forward_milestone_position):
     f1 = open('FPTD.dat','w')
 
     for i in range(total_iteration-itex):
-        print(i*tau, it[i], file=f1)
+        print(i*(tau-1)*dt, it[i], file=f1)
 
     f1.close()
 
@@ -223,7 +225,7 @@ def transitions_first_milestone(w,itex,dt,tau,forward_milestone_position):
     print('#time #flux', file=f1)
 
     for i in range(total_iteration-itex):
-        print(i*(tau-1), flux_array[i], file=f1)
+        print(i*(tau-1)*dt, flux_array[i], file=f1)
 
     f1.close()
 
@@ -295,7 +297,8 @@ def transitions_last_milestone(w,itex,dt,tau,backward_milestone_position):
                         break
                         #break
         flux_array.append(flux)
-    flux = flux/((total_iteration-itex)*(tau-1))
+    flux = flux/((total_iteration-itex)*(tau-1)*dt)
+    lifetime = lifetime*dt
 
     fcost.close()
 
@@ -310,7 +313,7 @@ def transitions_last_milestone(w,itex,dt,tau,backward_milestone_position):
     f1 = open('FPTD.dat','w')
 
     for i in range(total_iteration-itex):
-        print(i*tau, it[i], file=f1)
+        print(i*(tau-1)*dt, it[i], file=f1)
 
     f1.close()
 
@@ -319,7 +322,7 @@ def transitions_last_milestone(w,itex,dt,tau,backward_milestone_position):
     print('#time #flux', file=f1)
 
     for i in range(total_iteration-itex):
-        print(i*(tau-1), flux_array[i], file=f1)
+        print(i*(tau-1)*dt, flux_array[i], file=f1)
 
     f1.close()
 
