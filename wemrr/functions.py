@@ -59,22 +59,31 @@ def generate_we_bins(milestones,milestone_index,bin_width):
         start = milestones[milestone_index-1]
         end = milestones[milestone_index+1]
         current = milestones[milestone_index]
+    
+    if milestone_index != len(milestones)-1:
+        if int((end - current)%bin_width[milestone_index]) != 0:
+            print("Milestone spacing must be integer multiple of bin width \n Error in milestone: %d"%milestone_index)
+            return
+    if milestone_index != 0:
+        if int((current - start)%bin_width[milestone_index-1]) != 0:
+            print("Milestone spacing must be integer multiple of bin width \n Error in milestone: %d"%milestone_index)
+            return
 
-    if int((end - current)%bin_width) != 0:
-        print("Milestone spacing must be integer multiple of bin width \n Error in milestone: %d"%milestone_index)
-        return
-    elif int((current - start)%bin_width) != 0:
-        print("Milestone spacing must be integer multiple of bin width \n Error in milestone: %d"%milestone_index)
-        return
+    if milestone_index != 0:
+        numbins1 = int((current - start)/bin_width[milestone_index-1])
+        bin_list1 = [start + bin_width[milestone_index-1]*i for i in range(numbins1) ]
+    else :
+        bin_list1 = []
 
-    numbins = int((end - start)/bin_width)
-    bin_list = [start + bin_width*i for i in range(numbins+1) ]
+    if milestone_index != len(milestones)-1:
+        numbins2 = int((end - current)/bin_width[milestone_index])
+        bin_list2 = [current + bin_width[milestone_index]*i for i in range(numbins2) ]
+        bin_list2.append(end)
+    else :
+        bin_list2 = [end]
 
-    #a = np.arange(start,current,bin_width)
-    #b = np.arange(current,end+bin_width,bin_width)
+    bin_list = bin_list1 + bin_list2
 
-    #print(np.concatenate((a,b)))
-    #bins = np.concatenate((a,b)).tolist()
 
     bin_list = [round(num, 2) for num in bin_list]
     bin_list.append('inf')
@@ -82,8 +91,6 @@ def generate_we_bins(milestones,milestone_index,bin_width):
 
     return bin_list
 
-#x = generate_we_bins(milestones,2,we_bin_width)
-#print(str(x))
 
 def build_namd(milestones,we_bin_width,k_eq,k_res,minimization_nsteps,equilibration_nsteps,equilibration_dcd_frequency,nsteps,print_frequency,dcd_frequency,pcoord_len,n_traj_per_bin,n_iterations_restrained,n_iterations):
     boundaries = str(['-inf',milestones[0],milestones[len(milestones)-1],'inf'])
