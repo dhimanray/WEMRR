@@ -8,7 +8,7 @@ l = np.loadtxt('parent.dat')
 
 r = l[len(l)-1]
 
-print("{:.2f}".format(r)) #needed for OpenMM (does not include zero frame by default)
+#print("{:.2f}".format(r)) #needed for OpenMM (does not include zero frame by default)
 
 l = []
 
