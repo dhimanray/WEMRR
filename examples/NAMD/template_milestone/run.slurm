@@ -5,6 +5,7 @@
 #SBATCH -p standard          ## partition/queue name
 #SBATCH --nodes=1            ## (-N) number of nodes to use
 #SBATCH --cpus-per-task=4    ## number of cores the job needs
+#SBATCH --gpus-per-task=1
 #SBATCH -t 72:00:00
 #SBATCH --mem=8gb
 #SBATCH --error=slurm-%J.err ## error log file

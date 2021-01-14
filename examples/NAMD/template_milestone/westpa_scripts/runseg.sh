@@ -72,7 +72,7 @@ elif [ "$WEST_CURRENT_SEG_INITPOINT_TYPE" = "SEG_INITPOINT_NEWTRAJ" ]; then
 fi
 ############################## Run the dynamics ################################
 # Propagate the segment using namd2 
-/home/dhiman/NAMD_2.13_Linux-x86_64-multicore/namd2 md.conf > seg.log   
+namd2 md.conf > seg.log   
 #*** Make sure to provide the correct path to NAMD in your cluster in above line ***#
 
 ########################## Calculate and return data ###########################
