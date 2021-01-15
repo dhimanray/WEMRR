@@ -17,9 +17,14 @@ def MFPT(Q,t,Ns,Nend):
     K = Q.copy()
     N = len(t)
 
+    #impose steady state
+    for i in range(N):
+        K[N-1,i] = 0.0
+    K[N-1,0] = 1.0  #cyclic or periodic boundary condition to get steady state
+
     for i in range(N):
         K[i,i] = 0.0 #make sure diagonal elements are zero
-        totp = sum(K[i,:])
+        totp = np.sum(K[i])
         for j in range(N):
             K[i,j] = K[i,j]/totp
     
@@ -59,6 +64,11 @@ def free_energy(Q,t,mps,radial=True):
 
     K = Q.copy()
     N = len(mps)
+    
+    #impose equilibrium
+    for i in range(N):
+        K[N-1,i] = 0.0
+    K[N-1,0] = 1.0 #reflecting boundary condition (Graziloli and Andricioaei, JCP, 149, 084103 (2018) Page 4)
 
     for i in range(N):
         K[i,i] = 0.0 #make sure diagonal elements are zero
@@ -101,10 +111,9 @@ def free_energy(Q,t,mps,radial=True):
     
 
 
-def steady_state_kernel(mps):
+def compute_kernel(mps):
     '''Compute the transition kernel, lifetime vector and the 
-    milestone hitting statistics for the case of steady state 
-    situation (for kinetics calculation).
+    milestone hitting statistics.
     Will read the data from milestone_i/milestone-data.dat 
     files. i goes from 0 to N-1
 
@@ -131,59 +140,19 @@ def steady_state_kernel(mps):
 
     Nhit = np.zeros((N,N))
 
-    for i in range(N-1):
+    for i in range(N):
         l = np.loadtxt('milestone_%d/milestone-data.dat'%i)
-        K[i,i+1] = l[3]
-        Nhit[i,i+1] = l[5]
-        if i!=0:
+        if i != N-1:
+            K[i,i+1] = l[3]
+            Nhit[i,i+1] = l[5]
+        if i != 0:
             K[i,i-1] = l[4]
             Nhit[i,i-1] = l[6]
         t[i] = l[2]
-    K[N-1,0] = 1.0  #cyclic or periodic boundary condition to get steady state
+    #K[N-1,0] = 1.0  #cyclic or periodic boundary condition to get steady state
 
     return K, t, Nhit
 
-def equilibrium_kernel(mps):
-    '''Compute the transition kernel, lifetime vector and the 
-    milestone hitting statistics for the case of equilibrium 
-    situation (for free energy calculation).
-    Will read the data from milestone_i/milestone-data.dat 
-    files. i goes from 0 to N-1
-
-    In milestone-data.dat the transition statistics is provided
-    in the following order:
-    MFPT_forward, MFPT_back, lifetime, forward probability, backward probability, forward count, backward count
-
-    Input
-    -----
-    mps : list of milestone positions
-
-    Returns
-    -----
-    K : Transition kernel
-    t : lifetime vector
-    Nhit : Matrix containing number of hitting points
-
-    '''
-    N = len(mps)
-
-    K = np.zeros((N,N))
-
-    t = np.zeros(N)
-
-    Nhit = np.zeros((N,N))
-
-    for i in range(N-1):
-        l = np.loadtxt('milestone_%d/milestone-data.dat'%i)
-        K[i,i+1] = l[3]
-        Nhit[i,i+1] = l[5]
-        if i!=0:
-            K[i,i-1] = l[4]
-            Nhit[i,i-1] = l[6]
-        t[i] = l[2]
-    K[N-1,N-2] = 1.0   #reflecting boundary condition (Graziloli and Andricioaei, JCP, 149, 084103 (2018) Page 4)
-    
-    return K, t, Nhit
 
 def Monte_Carlo_bootstrapping(N_total,K,t,Nhit,interval):
     '''Perform nonreversible element shift Monte Carlo to sample rate matrices
@@ -251,11 +220,13 @@ def Monte_Carlo_bootstrapping(N_total,K,t,Nhit,interval):
             for j in range(N):
                 if t[i] != 0:
                     sampled_K[i,j] = Q[i,j]*t[i]
+        for i in range(N):
+            sampled_K[i,i] = 0.0
 
         #only include after "interval" steps 
         if (k+1)%interval == 0:
             K_list.append(sampled_K)
             
-        #convert from list to array before returning
-        return np.array(K_list)
+    #convert from list to array before returning
+    return np.array(K_list)
 

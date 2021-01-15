@@ -63,23 +63,23 @@ def transitions_intermediate_milestone(w,itex,dt,tau,forward_milestone_position,
         for j in range(len(l)):
             #print j
 
-            if l[j][0] < sink1 and l[j][tau-1] >= sink1:
+            if l[j][0][0] < sink1 and l[j][tau-1][0] >= sink1:
                 it[i] += wts[j]
                 #print wts[j], 'forwd'
                 count_forward += 1
-                for k in range(tau):
-                    if l[j][k] < sink1 and l[j][k+1] >= sink1:
+                for k in range(tau-1):
+                    if l[j][k][0] < sink1 and l[j][k+1][0] >= sink1:
                         flux += wts[j]
                         lifetime += wts[j]*(i*(tau-1)+k)
                         break
                         #break
 
-            if l[j][0] > sink2 and l[j][tau-1] <= sink2:
+            if l[j][0][0] > sink2 and l[j][tau-1][0] <= sink2:
                 #print l[j,0], l[j,tau-1]
                 it_back[i] += wts[j]
                 #print wts[j], 'backwd'
                 count_backward += 1
-                for k in range(tau):
+                for k in range(tau-1):
                     #print 'elmnts',l[j,k]
                     if l[j][k][0] > sink2 and l[j][k+1][0] <= sink2:
                         flux_back += wts[j]
@@ -188,13 +188,13 @@ def transitions_first_milestone(w,itex,dt,tau,forward_milestone_position):
         for j in range(len(l)):
             #print j
 
-            if l[j][0] < sink and l[j][tau-1] >= sink:
+            if l[j][0][0] < sink and l[j][tau-1][0] >= sink:
                 it[i] += wts[j]
                 #print wts[j]
                 count_forward += 1
-                for k in range(tau):
+                for k in range(tau-1):
                     #print k
-                    if l[j][k] < sink and l[j][k+1] >= sink:
+                    if l[j][k][0] < sink and l[j][k+1][0] >= sink:
                         flux += wts[j]
                         lifetime += wts[j]*(i*(tau-1)+k)
                         break
@@ -285,13 +285,13 @@ def transitions_last_milestone(w,itex,dt,tau,backward_milestone_position):
         for j in range(len(l)):
             #print j
 
-            if l[j][0] > sink and l[j][tau-1] <= sink:
+            if l[j][0][0] > sink and l[j][tau-1][0] <= sink:
                 it[i] += wts[j]
                 #print wts[j]
                 count_backward += 1
-                for k in range(tau):
+                for k in range(tau-1):
                     #print k
-                    if l[j][k] > sink and l[j][k+1] <= sink:
+                    if l[j][k][0] > sink and l[j][k+1][0] <= sink:
                         flux += wts[j]
                         lifetime += wts[j]*(i*(tau-1)+k)
                         break

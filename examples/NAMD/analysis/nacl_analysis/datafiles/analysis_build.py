@@ -4,13 +4,13 @@ import numpy as np
 import os
 import subprocess
 
-milestones = [2.4,2.6,3.6,4.6,5.6,7.0]
+milestones = [2.45,2.7,3.5,4.5,5.5,7.0,9.0]
 
 #========================================================
 #USER DEFINED PARAMETERS
 #========================================================
 itex = 10 #number of iterations to exclude for harmonic constrained simulation
-dt = 0.02 #frequency at which progress coordinate is saved (in realistic unit like ps)
+dt = 0.01 #frequency at which progress coordinate is saved (in realistic unit like ps)
 tau = 11 #number of progress coordinate values saved per iteration + 1
 
 #forward_milestone_position = 5.6
