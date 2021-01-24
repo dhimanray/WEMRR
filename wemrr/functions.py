@@ -120,13 +120,15 @@ def build_namd(milestones,we_bin_width,k_eq,k_res,minimization_nsteps,equilibrat
         os.system('cp -r template_milestone %s'%dir_name)
 
         #copy structure files to equilibration directory
-        os.system('cp structure_files/topology.psf %s/equilibration/'%dir_name)
+        os.system('cp structure_files/topology.prmtop %s/equilibration/'%dir_name) #amber force field
+        os.system('cp structure_files/topology.psf %s/equilibration/'%dir_name)  #charmm force field
         os.system('cp structure_files/milestone_%d.pdb %s/equilibration/structure.pdb'%(i,dir_name))
         os.system('cp structure_files/equilibration.conf %s/equilibration/equilibration.conf'%dir_name)
         os.system('cat structure_files/colvars.in %s/equilibration/restrain.in > %s/equilibration/colvars.in'%(dir_name,dir_name))
 
         #copy structure files to common files directory
-        os.system('cp structure_files/topology.psf %s/common_files/'%dir_name)
+        os.system('cp structure_files/topology.prmtop %s/common_files/'%dir_name) #amber force field
+        os.system('cp structure_files/topology.psf %s/common_files/'%dir_name)  #charmm force field
         os.system('cp structure_files/milestone_%d.pdb %s/common_files/structure.pdb'%(i,dir_name))
         os.system('cp structure_files/colvars.in %s/common_files/'%dir_name)
         os.system('cp structure_files/md.conf %s/common_files/md.conf'%dir_name)
